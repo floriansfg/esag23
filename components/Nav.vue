@@ -7,6 +7,7 @@
 	<div class="nav" :class="{open: open}">
 		<NuxtLink to="/">Home</NuxtLink>
 		<NuxtLink to="/scoreboard">Scoreboard</NuxtLink>
+		<NuxtLink to="/settings">Settings</NuxtLink>
 		<NuxtLink to="/admin/login">Login</NuxtLink>
 	</div>
 

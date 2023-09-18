@@ -59,8 +59,18 @@ export default {
 
 		onValue(ref(db, 'pointEntries'), (snapshot) => {
 			this.pointEntries = snapshot.val();
-			console.log(this.pointEntries)
+			// console.log(this.pointEntries)
 		});
+
+		// onValue(ref(db, 'pointEntries'), (snapshot) => {
+		// 	this.pointEntries = []
+			
+		// 	snapshot.forEach((childSnapshot) => {
+		// 		const childKey = childSnapshot.key;
+		// 		const childData = childSnapshot.val();
+		// 		this.pointEntries.push(childData)
+		// 	});
+		// });
 	},
 	methods: {
 		close() {
@@ -74,6 +84,7 @@ export default {
 
 .scoreboard, .pointEntries {
 	padding: 40px;
+	width: 100vw;
 	max-width: 800px;
 }
 
@@ -122,7 +133,6 @@ h1 {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0 15px;
-	padding: 50px;
 	color: #FC9459;
 	font-family: 'Avenir';
 	font-weight: 1000;

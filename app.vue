@@ -32,22 +32,6 @@ export default {
 			this.teams = data
 		});
 	},
-	methods: {
-		async registerPush() {
-			const permission = await Notification.requestPermission()
-			console.log(this.selectedTeam)
-			const token = await useToken()
-			console.log(token)
-			const {data} = await useFetch("api/subscribe", {
-				method: 'POST',
-				body: {
-					token: token,
-					topic: this.selectedTeam
-				},
-				onResponse: ({reponse}) => console.log(reponse)
-			})
-		}
-	}
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-	admin
+	<div v-if="useState('loggedIn').value">
 	<button @click="signOut()">Abmelden</button>
 	<button @click="showAddpoints=true">Punkte</button>
 	<Modal :show="showAddpoints" @close="showAddpoints=false">
@@ -21,6 +21,8 @@
 				<button type="submit" class="btn btn-primary">Add</button>
             </form>
 	</Modal>
+	<button @click="sendNotification()">Send Notification</button>
+	</div>
 </template>
 <script>
 import { getAuth, signOut } from "firebase/auth";
@@ -33,15 +35,14 @@ export default {
 			days: ['Montag','Dienstag','Mittwoch','Donnerstag'],
 			points: 0,
 			selectedTeam: null,
-			selectedDay: null
+			selectedDay: null,
+			loggedIn: null
 		}
 	},
 	mounted() {
 		const db = getDatabase()
 		onValue(ref(db, 'teams'), (snapshot) => {
 			this.teams = snapshot.val();
-			this.teams = this.teams.sort((a, b) => a.points < b.points ? 1 : -1);
-			
 		});
 	},
 	methods: {
@@ -53,21 +54,27 @@ export default {
 				console.log(error)
 			});
 		},
-		addPoints() {
+		async addPoints() {
 			const db = getDatabase();
 			getAuth().onAuthStateChanged(function(user) {
 				console.log(user)
 			
 			});
-			const postListRef = ref(db, 'pointEntries');
-			const newPostRef = push(postListRef);
-			set(newPostRef, {
-				note: 'test',
-				points: this.points,
-				team: this.selectedTeam,
-				time: 0
-			});
-		}
+
+			const idToken = await getAuth().currentUser.getIdToken()
+			console.log(idToken)
+			const {data} = await useFetch("api/addPoints", {
+				method: 'POST',
+				body: {
+					token: idToken,
+					team: this.selectedTeam,
+					points: this.points,
+					note: '',
+					silent: false
+				},
+				onResponse: ({reponse}) => console.log(reponse)
+			})
+		},
 	}
 }
 </script>

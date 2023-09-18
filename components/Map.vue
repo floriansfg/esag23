@@ -3,7 +3,7 @@
 		<img class="nightMap" src="/map_normal_night.png">
 		<img class="dayMap" id="map_day" src="/map_normal_day.png">
 		<canvas id="canvas" ref="map" width="1920" height="1529"></canvas>
-		<div class="marker" v-for="(team,index) in teams"  :style="markers[index]">
+		<div class="marker" @click="() => {clickedMarker=markers[index];console.log(clickedMarker)}" v-for="(team,index) in teams" :style="markers[index]">
 			<img :src="team.icon" class="icon" alt="">
 			<svg viewBox="0 0 52 63" xmlns="http://www.w3.org/2000/svg">
 				<path d="M51.1735 25.2607C51.1735 35.4853 42.7532 45.2922 42.7532 45.2922C42.7532 45.2922 29.5214 62.5504 25.9128 62.5504C22.3041 62.5504 9.07228 45.2922 9.07228 45.2922C9.07228 45.2922 0.652039 35.4853 0.652039 25.2607C0.652039 11.3096 11.9616 0 25.9128 0C39.8639 0 51.1735 11.3096 51.1735 25.2607Z" fill="white"/>
@@ -25,7 +25,8 @@ export default {
 				y: 0
 			},
 			teams: [],
-			platforms: []
+			platforms: [],
+			clickedMarker: null
 		}
 	},
 	computed: {
@@ -43,8 +44,8 @@ export default {
 			teamMarkers.map(marker => {
 				let duplicates = teamMarkers.filter(el => el.left == marker.left && el.top == marker.top)
 				duplicates.map((el,index) => {
-					el.top -= index*34
-					el.zIndex = duplicates.length - index
+					if(marker != this.clickedMarker) el.top -= index*34
+					// el.zIndex = duplicates.length - index
 				})
 			})
 
@@ -164,7 +165,7 @@ export default {
 	height: 40px;
 	width: 40px;
 	transform: translate(-18px,-45px);
-	filter: drop-shadow(0 0 15px #0000006c);
+	/* filter: drop-shadow(0 0 15px #0000006c); */
 	transition: margin 0.2s;
 }
 
