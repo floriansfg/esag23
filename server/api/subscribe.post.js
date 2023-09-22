@@ -1,5 +1,5 @@
 import { getMessaging } from "firebase-admin/messaging";
-import { getDatabase, onValue, ref } from "firebase-admin/database";
+import { getDatabase } from "firebase-admin/database";
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
