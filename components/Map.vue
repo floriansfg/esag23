@@ -3,7 +3,7 @@
 		<img class="nightMap" src="/map_normal_night.png">
 		<img class="dayMap" id="map_day" src="/map_normal_day.png">
 		<canvas id="canvas" ref="map" width="1920" height="1529"></canvas>
-		<div class="marker" @click="() => {clickedMarker=markers[index];console.log(clickedMarker)}" v-for="(team,index) in teams" :style="markers[index]">
+		<div class="marker" v-for="(team,index) in teams" :style="markers[index]">
 			<img :src="team.icon" class="icon" alt="">
 			<svg viewBox="0 0 52 63" xmlns="http://www.w3.org/2000/svg">
 				<path d="M51.1735 25.2607C51.1735 35.4853 42.7532 45.2922 42.7532 45.2922C42.7532 45.2922 29.5214 62.5504 25.9128 62.5504C22.3041 62.5504 9.07228 45.2922 9.07228 45.2922C9.07228 45.2922 0.652039 35.4853 0.652039 25.2607C0.652039 11.3096 11.9616 0 25.9128 0C39.8639 0 51.1735 11.3096 51.1735 25.2607Z" fill="white"/>
@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import { getDatabase, ref, onValue } from "firebase/database";
 
 export default {
+	props: ['teams','platforms'],
 	data() {
 		return {
 			mapSize: {
@@ -24,15 +24,13 @@ export default {
 				x: 0,
 				y: 0
 			},
-			teams: [],
-			platforms: [],
 			clickedMarker: null
 		}
 	},
 	computed: {
 		markers() {
-
 			let teamMarkers = this.teams.map(team => {
+				
 				let platform = this.getPlatform(team.points)
 			
 				return {
@@ -60,26 +58,6 @@ export default {
 	async mounted() {
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize);
-
-		// var c = document.getElementById("canvas");
-		// var ctx = c.getContext("2d");
-		// // let map_day = document.getElementById('map_day')
-		// // ctx.drawImage(map_day, 0, 0)
-		
-		// let url = "/map_normal_day copy.png";
-  		// let img = new Image();
-		// await new Promise(r => img.onload=r, img.src=url);
-		// ctx.drawImage(img, 0, 0);
-
-		// this.vueCanvas = ctx;
-
-		const db = getDatabase()
-
-		onValue(ref(db,'/'), (snapshot) => {
-			const data = snapshot.val()
-			this.teams = data.teams;
-			this.platforms = data.maps[data.currentMap].platforms
-		})
 	},
   	unmounted() {
 		window.removeEventListener('resize', this.handleResize);

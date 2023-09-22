@@ -5,9 +5,12 @@ export default defineNuxtPlugin(nuxtApp => {
 
 	const router = useRouter();
 	router.beforeEach(async (to) => {
-		if (isAdminRoute(to) && !(await getCurrentUser())) {
-			return '/admin/login'
-		}
+			if(await getCurrentUser()) {
+				if (to.path === '/admin/login' || to.path === '/admin/login/') return '/admin'
+			} else {
+				if (to.path === '/admin' || to.path === '/admin/') return '/admin/login'
+			}
+
 	  })
 
 })

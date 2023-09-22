@@ -8,7 +8,8 @@
 		<NuxtLink to="/">Home</NuxtLink>
 		<NuxtLink to="/scoreboard">Scoreboard</NuxtLink>
 		<NuxtLink to="/settings">Settings</NuxtLink>
-		<NuxtLink to="/admin/login">Login</NuxtLink>
+		<NuxtLink v-if="useState('loggedIn').value" to="/admin">Admin</NuxtLink>
+		<NuxtLink v-else to="/admin/login">Login</NuxtLink>
 	</div>
 
 	<div v-if="open" @click="open=false" class="backdrop"></div>
@@ -34,11 +35,14 @@ export default {
 	position: fixed;
 	left: 20px;
 	top: 20px;
-	width: 40px
+	width: 40px;
+	z-index: 40;
 }
 
 .backdrop {
 	position: fixed;
+	background-color: rgb(39, 42, 42);
+	opacity: 0.6;
 	width: 100%;
 	height: 100%;
 	top: 0;

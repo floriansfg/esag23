@@ -1,39 +1,10 @@
 <template>
   <div>
     <VitePwaManifest />
-	<!-- <select class="dropdown" v-model="selectedTeam">
-       <option v-for="team in teams" :value="team.name">{{ team.name }}</option>
-    </select>
-	<button @click="registerPush()">Subscribe</button> -->
 	<NuxtPage/>
 	<Nav/>
   </div>
 </template>
-
-<script>
-import { getDatabase, ref, onValue } from "firebase/database";
-
-export default {
-	data() {
-		return {
-			teams: [],
-			selectedTeam: null
-		}
-	},
-	mounted() {
-		const db = getDatabase()
-		// console.log(db)
-		// const teamsRef = db.ref('teams')
-		// const teams = await teamsRef.once('value')
-		// const teamsRef = ref(db,'teams')
-		const teamRef = ref(db, 'teams');
-		onValue(teamRef, (snapshot) => {
-			const data = snapshot.val();
-			this.teams = data
-		});
-	},
-}
-</script>
 
 <style lang="scss">
 
@@ -50,5 +21,10 @@ body {
 	background: #293E4E;
 	display: flex;
 	justify-content: center;
+}
+
+h1 {
+	color: #FC9459;
+	text-align: center;
 }
 </style>

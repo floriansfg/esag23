@@ -1,5 +1,5 @@
 import { getMessaging, getToken } from "firebase/messaging";
-import { getDatabase } from "firebase/database"
+import { getDatabase, ref, onValue } from "firebase/database"
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 
 export const useMessaging = () => {
@@ -42,6 +42,15 @@ export const initUser = async () => {
 			console.log(user)
 		}
 	})
+}
+
+export const useTeams = (teams,entries) => {
+	teams.map((team,index) => {
+		const teamEntries = Object.values(entries).filter(entry => entry.team == index)
+		team.points = teamEntries.reduce((points, entry) => points+=entry.points,0)
+		console.log(team.points)
+	})
+	return teams
 }
 
 // export const useDatabase = () => {

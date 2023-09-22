@@ -6,14 +6,14 @@ export default defineEventHandler(async (event) => {
 	const body = await readBody(event)
 
 	const idToken = body.token
-	console.log(idToken)
+	
 	getAuth().verifyIdToken(idToken)
-	.then((decodedToken) => {
+	.then(async (decodedToken) => {
 		const uid = decodedToken.uid;
-		console.log(body)
-		addPoints(body.team,body.points,body.note)
+		const user = await getAuth().getUser(uid)
+		addPoints(body.team,body.points,body.note,user.uid)
 
-		if(!body.secret) sendNotification()
+		if(!body.secret) sendNotification("Update",body.points+" für dein Team",body.team)
 
 	}).catch((error) => {
 		console.log(error)
@@ -22,23 +22,24 @@ export default defineEventHandler(async (event) => {
 	
 })
 
-function addPoints(team,points,note) {
+function addPoints(team,points,note,user) {
 	var db = getDatabase();
 	db.ref('pointEntries').push({
 		note: note,
 		points: points,
 		team: team,
-		time: 0
+		user: user,
+		time: new Date().toJSON()
 	});
 }
 
-function sendNotification() {
+function sendNotification(title,body,topic) {
 	const message = {
 		notification: {
-			title: 'Neue Punkte',
-			body: 'Yayyy'
+			title: title,
+			body: body
 		},
-		topic: 'daisy'
+		topic: topic
 	};
 
 	// Send a message to devices subscribed to the provided topic.
@@ -46,7 +47,7 @@ function sendNotification() {
 	messaging.send(message)
 	.then((response) => {
 		// Response is a message ID string.
-		console.log('Successfully sent message:', response);
+		console.log('Successfully sent message to '+topic+':', response);
 	})
 	.catch((error) => {
 		console.log('Error sending message:', error);
