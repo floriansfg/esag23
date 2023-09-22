@@ -6,11 +6,10 @@ export default defineEventHandler(async (event) => {
 
 	const messaging = getMessaging();
 
-	const db = getDatabase()
-	let teams = null
-	db.ref('/teams').on('value', (snapshot) => {
+	let teams = ['0','1','2','3']
+//	db.ref('/teams').on('value', (snapshot) => {
 		teams = snapshot.val();
-		teams.map(team => messaging.unsubscribeFromTopic([body.token],team.id))
+		teams.map(team => messaging.unsubscribeFromTopic([body.token],team))
 
 		messaging.subscribeToTopic([body.token], body.topic)
 		.then((response) => {
@@ -19,7 +18,7 @@ export default defineEventHandler(async (event) => {
 		.catch((error) => {
 			console.log('Error subscribing to topic:', error);
 		});
-	});
+	//});
 
 	console.log(body)
 })
