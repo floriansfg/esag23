@@ -62,7 +62,8 @@ export default {
 	padding: 50px;
 	font-size: 40px;
 	transform: translateX(-100%);
-	transition: all 0.2s
+	transition: all 0.2s;
+	font-family: 'SuperMario';
 }
 
 .nav.open {

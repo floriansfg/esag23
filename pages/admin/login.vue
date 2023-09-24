@@ -54,6 +54,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .loginForm {

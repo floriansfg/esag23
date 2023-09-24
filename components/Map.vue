@@ -91,8 +91,8 @@ export default {
 		},
 		getPlatform(points) {
 			let platform = this.platforms.find(platform => points <= platform.points);
-			if(!platform) platform = this.platforms.slice(-1)
-
+			if(!platform) platform = this.platforms.slice(-1)[0]
+			
 			return platform
 		}
   	},

@@ -1,6 +1,7 @@
 <template>
 	<div class="pointEntries">
 		<h1>History</h1>
+		<slot/>
 		<table class="entries">
 			<thead>
 				<tr>
@@ -55,6 +56,8 @@ h1 {
 	padding: 40px;
 	width: 100%;
 	max-width: 800px;
+	display: flex;
+	flex-direction: column;
 }
 
 .entries {

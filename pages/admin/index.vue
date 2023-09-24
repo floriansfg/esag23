@@ -2,13 +2,14 @@
 	<div class="admin-panel" v-if="useState('loggedIn').value">
 		<h1>Admin Panel</h1>
 		
-	<div class="input-group mt-5">
+	<!-- <div class="input-group mt-5">
 		<input type="text" class="form-control" placeholder="Username" v-model="username" aria-label="Username">
 		<button class="btn btn-outline-secondary" type="button" @click="saveUsername()">Save</button>
-	</div>
+	</div> -->
 	<button class="btn btn-primary" @click="signOut()">Abmelden</button>
-	<button class="btn btn-primary" @click="showAddpoints=true">Punkte hinzufügen</button>
-	<PointEntries :entries="pointEntries" :teams="teams" :admin="true" />
+	<PointEntries :entries="pointEntries" :teams="teams" :admin="true">
+		<button class="btn btn-primary" @click="showAddpoints=true">Punkte hinzufügen</button>
+	</PointEntries>
 	<Modal :show="showAddpoints" @close="showAddpoints=false">
 		<form @submit.prevent="addPoints()" class="pointsForm">
                 <div class="form-group">
@@ -32,7 +33,7 @@
 </template>
 <script>
 import { getAuth, signOut, updateProfile } from "firebase/auth";
-import { getDatabase, ref, onValue, push, set } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 export default {
 	data() {
 		return {
@@ -48,11 +49,10 @@ export default {
 	},
 	mounted() {
 		const db = getDatabase()
-		onValue(ref(db, 'teams'), (snapshot) => {
-			this.teams = snapshot.val();
-		});
-		onValue(ref(db, 'pointEntries'), (snapshot) => {
-			this.pointEntries = Object.values(snapshot.val()).sort((a,b) => new Date(a.time) - new Date(b.time)).reverse()
+		onValue(ref(db, '/'), (snapshot) => {
+			const data = snapshot.val();
+			this.teams = data.teams
+			this.pointEntries = Object.values(data.pointEntries).sort((a,b) => new Date(a.time) - new Date(b.time)).reverse()
 		});
 
 		getAuth().onAuthStateChanged((user) => {
@@ -72,7 +72,6 @@ export default {
 		async addPoints() {
 
 			const idToken = await getAuth().currentUser.getIdToken()
-			console.log(idToken)
 			await useFetch("api/addPoints", {
 				method: 'POST',
 				body: {
@@ -83,6 +82,7 @@ export default {
 					silent: this.silent
 				}
 			})
+			this.showAddpoints = false
 		},
 		saveUsername() {
 			getAuth().onAuthStateChanged((user) => {
@@ -102,6 +102,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .pointsForm {
@@ -112,7 +113,6 @@ export default {
 	align-items: center;
 	width: 350px;
 	border-radius: 10px;
-	font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 ;
 }
 .input-group {
