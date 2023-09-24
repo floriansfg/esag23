@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
 	const runtimeConfig = useRuntimeConfig()
 	const apps = getApps()
 	const serviceAccount = runtimeConfig.FIREBASE_SERVICE_ACCOUNT_KEY
-	console.log(serviceAccount)
 	const app = !apps.length ? initializeApp({
 		credential: cert(serviceAccount),
 		databaseURL: "https://esag-f0e87-default-rtdb.europe-west1.firebasedatabase.app/",

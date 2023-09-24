@@ -24,7 +24,6 @@ export const loginUser = async (mail,password) => {
 	.then((userCredential) => {
 		// Signed in 
 		const user = userCredential.user;
-		console.log(user)
 		// ...
 	})
 	.catch((error) => {
@@ -39,7 +38,6 @@ export const initUser = async () => {
 	onAuthStateChanged(auth, (user) => {
 		if(user) {
 			const uid = user.uid
-			console.log(user)
 		}
 	})
 }
@@ -48,7 +46,6 @@ export const useTeams = (teams,entries) => {
 	teams.map((team,index) => {
 		const teamEntries = Object.values(entries).filter(entry => entry.team == index)
 		team.points = teamEntries.reduce((points, entry) => points+=entry.points,0)
-		console.log(team.points)
 	})
 	return teams
 }

@@ -19,6 +19,4 @@ export default defineEventHandler(async (event) => {
 			console.log('Error subscribing to topic:', error);
 		});
 	//});
-
-	console.log(body)
 })

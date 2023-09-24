@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 		addPoints(body.team,body.points,body.note,username,uid)
 
 		if(!body.silent) sendNotification("Update",body.points+" für dein Team",body.team)
-
+		console.log(body.points + " Points added to "+body.team)
 	}).catch((error) => {
 		console.log(error)
 	});
