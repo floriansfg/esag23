@@ -6,21 +6,26 @@
 		<input type="text" class="form-control" placeholder="Username" v-model="username" aria-label="Username">
 		<button class="btn btn-outline-secondary" type="button" @click="saveUsername()">Save</button>
 	</div>
-	<!-- <button @click="signOut()">Abmelden</button> -->
-	<button class="btn btn-primary" @click="showAddpoints=true">Punkte</button>
+	<button class="btn btn-primary" @click="signOut()">Abmelden</button>
+	<button class="btn btn-primary" @click="showAddpoints=true">Punkte hinzufügen</button>
 	<PointEntries :entries="pointEntries" :teams="teams" :admin="true" />
 	<Modal :show="showAddpoints" @close="showAddpoints=false">
-		<form @submit.prevent="addPoints()" class="loginForm">
+		<form @submit.prevent="addPoints()" class="pointsForm">
                 <div class="form-group">
-					<select v-if="teams" class="form-select" v-model="selectedTeam">
+					<select required v-if="teams" class="form-select mb-3" v-model="selectedTeam">
+						<option :value="null" disabled>Team auswählen</option>
 						<option v-for="(team,index) in teams" :value="team">
 							{{ team.name }}
 						</option>
                 	</select>
-                    <input type="number" step="10" class="form-control" id="passwordInput" v-model="points"/>
-                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                    <input required type="number" class="form-control mb-3" v-model="points"/>
+					<input required type="text" class="form-control mb-3" placeholder="Grund" v-model="note"/>
+					<div class="form-check mb-3">
+						<input class="form-check-input" type="checkbox" v-model="silent" id="defaultCheck1">
+  						<label class="form-check-label" for="defaultCheck1">Silent</label>
+					</div>
                 </div>
-				<button type="submit" class="btn btn-primary">Add</button>
+				<button type="submit" class="btn btn-primary">Hinzufügen</button>
             </form>
 	</Modal>
 	</div>
@@ -34,11 +39,11 @@ export default {
 			showAddpoints: false,
 			teams: null,
 			pointEntries: null,
-			days: ['Montag','Dienstag','Mittwoch','Donnerstag'],
 			points: 0,
 			selectedTeam: null,
-			selectedDay: null,
-			username: null
+			note: null,
+			username: null,
+			silent: false
 		}
 	},
 	mounted() {
@@ -47,7 +52,7 @@ export default {
 			this.teams = snapshot.val();
 		});
 		onValue(ref(db, 'pointEntries'), (snapshot) => {
-			this.pointEntries = snapshot.val();
+			this.pointEntries = Object.values(snapshot.val()).sort((a,b) => new Date(a.time) - new Date(b.time)).reverse()
 		});
 
 		getAuth().onAuthStateChanged((user) => {
@@ -68,16 +73,15 @@ export default {
 
 			const idToken = await getAuth().currentUser.getIdToken()
 			console.log(idToken)
-			const {data} = await useFetch("api/addPoints", {
+			await useFetch("api/addPoints", {
 				method: 'POST',
 				body: {
 					token: idToken,
 					team: this.selectedTeam.id,
 					points: this.points,
-					note: '',
-					silent: false
-				},
-				onResponse: ({reponse}) => console.log(reponse)
+					note: this.note,
+					silent: this.silent
+				}
 			})
 		},
 		saveUsername() {
@@ -100,6 +104,17 @@ export default {
 	align-items: center;
 }
 
+.pointsForm {
+    padding: 35px 50px;
+    background: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 350px;
+	border-radius: 10px;
+	font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+;
+}
 .input-group {
 	width: 80%;
 }

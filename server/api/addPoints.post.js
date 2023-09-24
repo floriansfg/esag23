@@ -11,9 +11,10 @@ export default defineEventHandler(async (event) => {
 	.then(async (decodedToken) => {
 		const uid = decodedToken.uid;
 		const user = await getAuth().getUser(uid)
-		addPoints(body.team,body.points,body.note,user.uid)
+		const username = user.displayName ? user.displayName : user.email
+		addPoints(body.team,body.points,body.note,username,uid)
 
-		if(!body.secret) sendNotification("Update",body.points+" für dein Team",body.team)
+		if(!body.silent) sendNotification("Update",body.points+" für dein Team",body.team)
 
 	}).catch((error) => {
 		console.log(error)
@@ -22,13 +23,14 @@ export default defineEventHandler(async (event) => {
 	
 })
 
-function addPoints(team,points,note,user) {
+function addPoints(team,points,note,user,uid) {
 	var db = getDatabase();
 	db.ref('pointEntries').push({
 		note: note,
 		points: points,
 		team: team,
 		user: user,
+		uid: uid,
 		time: new Date().toJSON()
 	});
 }

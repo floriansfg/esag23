@@ -18,7 +18,8 @@
 						<div class="eventDetail">
 							<img class="icon" :src="teams[entry.team].icon">
 							<h4 :style="{color: entry.points>0?'#66B143':'#CF2C2C'}">{{(entry.points>0 ? '+' : '') + entry.points}}</h4>
-							<p>{{ entry.note }}</p>
+							<p>Note: {{ entry.note }}</p>
+							<p>User: {{ entry.user }}</p>
 						</div>
 					</Modal>
 				</tr>

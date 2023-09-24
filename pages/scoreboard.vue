@@ -28,7 +28,7 @@ export default {
 		onValue(ref(db, '/'), (snapshot) => {
 			const data = snapshot.val();
 			this.teams = useTeams(data.teams,data.pointEntries).sort((a, b) => a.points < b.points ? 1 : -1);
-			this.pointEntries = data.pointEntries
+			this.pointEntries = Object.values(data.pointEntries).sort((a,b) => new Date(a.time) - new Date(b.time)).reverse()
 		});
 
 		// onValue(ref(db, 'pointEntries'), (snapshot) => {

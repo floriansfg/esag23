@@ -10,9 +10,9 @@ export default defineNuxtConfig({
 			display: "standalone",
 			icons: [
 			  {
-				src: 'pwa-192x192.png',
+				src: 'mario_logo_blau.jpg',
 				sizes: '192x192',
-				type: 'image/png',
+				type: 'image/jpeg',
 			  }
 			],
 		  },
@@ -34,6 +34,9 @@ export default defineNuxtConfig({
 		  },
 	},
   	devtools: { enabled: true },
+	runtimeConfig: {
+		FIREBASE_SERVICE_ACCOUNT_KEY: ''
+	},
 	app: {
 		head: {
 			viewport: 'width=device-width, initial-scale=1',

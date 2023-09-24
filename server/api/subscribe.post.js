@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
 	let teams = ['0','1','2','3']
 //	db.ref('/teams').on('value', (snapshot) => {
-		teams = snapshot.val();
+		// teams = snapshot.val();
 		teams.map(team => messaging.unsubscribeFromTopic([body.token],team))
 
 		messaging.subscribeToTopic([body.token], body.topic)
