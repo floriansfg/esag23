@@ -25,14 +25,22 @@ export default defineEventHandler(async (event) => {
 
 function addPoints(team,points,note,user,uid) {
 	var db = getDatabase();
-	db.ref('pointEntries').push({
+	const ref = db.ref('pointEntries')
+	const newPostRef = ref.push();
+	newPostRef.set({
 		note: note,
 		points: points,
 		team: team,
 		user: user,
 		uid: uid,
 		time: new Date().toJSON()
-	});
+	},(error) => {
+		if (error) {
+		  console.log('Data could not be saved.' + error);
+		} else {
+		  console.log('Data saved successfully.');
+		}
+	  });
 }
 
 function sendNotification(title,body,topic) {
