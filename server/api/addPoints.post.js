@@ -12,7 +12,22 @@ export default defineEventHandler(async (event) => {
 		const uid = decodedToken.uid;
 		const user = await getAuth().getUser(uid)
 		const username = user.displayName ? user.displayName : user.email
-		await addPoints(body.team,body.points,body.note,username,uid)
+
+		var db = getDatabase();
+		await db.ref('pointEntries').push({
+			note: body.note,
+			points: body.points,
+			team: body.team,
+			user: username,
+			uid: uid,
+			time: new Date().toJSON()
+		}, (error) => {
+			if(error) {
+				console.log(error)
+			} else {
+				console.log("Save successfull")
+			}
+		} );
 
 		if(!body.silent) sendNotification("Update",body.points+" für dein Team",body.team)
 		console.log(body.points + " Points added to "+body.team)
@@ -23,24 +38,8 @@ export default defineEventHandler(async (event) => {
 	
 })
 
-async function addPoints(team,points,note,user,uid) {
-	var db = getDatabase();
-	const ref = db.ref('pointEntries')
-	const newPostRef = ref.push();
-	await newPostRef.set({
-		note: note,
-		points: points,
-		team: team,
-		user: user,
-		uid: uid,
-		time: new Date().toJSON()
-	},(error) => {
-		if (error) {
-		  console.log('Data could not be saved.' + error);
-		} else {
-		  console.log('Data saved successfully.');
-		}
-	  });
+function addPoints(team,points,note,user,uid) {
+	
 }
 
 function sendNotification(title,body,topic) {
