@@ -33,7 +33,7 @@ export default {
 		markers() {
 			let teamMarkers = this.teams.map(team => {
 				
-				let platform = this.getPlatform(team.points)
+				let platform = this.getPlatform(team.points - team.previousPoints)
 			
 				return {
 					left: (this.mapSize.width*platform.x)+(this.mapSize.x), 
@@ -99,6 +99,9 @@ export default {
 			};
 		},
 		getPlatform(points) {
+			// this.platforms.map((platform,index) => {
+
+			// })
 			let platform = this.platforms.find(platform => points <= platform.points);
 			if(!platform) platform = this.platforms.slice(-1)[0]
 			
