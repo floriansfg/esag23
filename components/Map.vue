@@ -57,9 +57,9 @@ export default {
 			return teamMarkers
 		},
 		mapOpacity() {
-			var start = new Date('2023-12-17T18:00:00'), // Jan 1, 2015
-			end = new Date('2023-12-17T19:00:00'), // August 24, 2015
-			today = new Date('2023-12-17T19:00:00') // April 23, 2015
+			var today = new Date() // April 23, 2015
+			var start = new Date().setHours(18,0,0)
+			var end = new Date().setHours(19,0,0)
 			const p = ((today - start) / (end - start));
 			return p
 		}

@@ -2,7 +2,7 @@
 	<div class="pointEntries">
 		<h1>History</h1>
 		<slot/>
-		<table v-if="entries" class="entries">
+		<table v-if="entries && Object.keys(entries).length" class="entries">
 			<thead>
 				<tr>
 				<th>Team</th>
