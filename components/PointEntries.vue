@@ -46,7 +46,7 @@ export default {
 		},
 		formatDate(time) {
 			let date = new Date(time)
-			return date.toLocaleString('de-de', {weekday: 'short'}) + ' ' + date.getHours() + ':' + date.getMinutes() + ' Uhr'
+			return date.toLocaleString('de-de', {weekday: 'short'}) + ' ' + date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + ' Uhr'
 		}
 	}
 }

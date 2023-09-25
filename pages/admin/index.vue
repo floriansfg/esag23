@@ -102,7 +102,7 @@ export default {
 <style scoped>
 
 .admin-panel {
-	padding: 40px;
+	margin-top: 40px;
 	width: 100vw;
 	max-width: 800px;
 	display: flex;
