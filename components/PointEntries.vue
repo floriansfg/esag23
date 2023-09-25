@@ -2,7 +2,7 @@
 	<div class="pointEntries">
 		<h1>History</h1>
 		<slot/>
-		<table class="entries">
+		<table v-if="entries" class="entries">
 			<thead>
 				<tr>
 				<th>Team</th>
@@ -26,6 +26,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<h3 v-else>Es gibt noch keine Punkte!</h3>
 	</div>
 </template>
 <script>
@@ -48,7 +49,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-h1 {
+h1, h3 {
 	color: #FC9459;
 	text-align: center;
 }
@@ -75,6 +76,7 @@ h1 {
 		background: #3F5769;
 		font-size: 20px;
 		width: 33%;
+		padding: 10px 15px;
 		&:first-child {
 			border-radius: 20px 0px 0px 20px;
 		}
@@ -82,10 +84,10 @@ h1 {
 			border-radius: 0 20px 20px 0;
 		}
 		img {
-			width: 60px;
-			height: 60px;
+			height: 50px;
 			object-fit: cover;
 			border-radius: 100%;
+			border: solid 5px #FC9459;;
 		}
 	}
 	th {

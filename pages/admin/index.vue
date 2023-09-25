@@ -70,19 +70,20 @@ export default {
 			});
 		},
 		async addPoints() {
-
-			const idToken = await getAuth().currentUser.getIdToken()
-			await useFetch("api/addPoints", {
-				method: 'POST',
-				body: {
-					token: idToken,
-					team: this.selectedTeam.id,
-					points: this.points,
-					note: this.note,
-					silent: this.silent
-				}
-			})
-			this.showAddpoints = false
+			if(this.selectedTeam && this.points != 0 && this.note) {
+				const idToken = await getAuth().currentUser.getIdToken()
+				await useFetch("api/addPoints", {
+					method: 'POST',
+					body: {
+						token: idToken,
+						team: this.selectedTeam.id,
+						points: this.points,
+						note: this.note,
+						silent: this.silent
+					}
+				})
+				this.showAddpoints = false
+			}
 		},
 		saveUsername() {
 			getAuth().onAuthStateChanged((user) => {

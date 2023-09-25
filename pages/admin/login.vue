@@ -24,9 +24,6 @@ export default {
 			password: ''
 		}
 	},
-	async created() {
-		// if(useState('loggedIn').value) await navigateTo('/admin')
-	},
 	methods: {
 		async submit() {
 			const auth = getAuth();

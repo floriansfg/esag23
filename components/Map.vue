@@ -1,12 +1,13 @@
 <template>
 	<div class="imgWrapper">
-		<img class="nightMap" src="/map_normal_night.png">
-		<img class="dayMap" id="map_day" src="/map_normal_day.png">
+		<img class="dayMap" v-show="loadCounter==0" @load="loadCounter--" src="/map_normal_day.png">
+		<img class="nightMap" v-show="loadCounter==0" @load="loadCounter--" src="/map_normal_night.png" :style="{opacity: mapOpacity}">
 		<canvas id="canvas" ref="map" width="1920" height="1529"></canvas>
-		<div class="marker" v-for="(team,index) in teams" :style="markers[index]">
+		<div v-show="loadCounter!=0" class="spinner"></div>
+		<div class="marker" v-show="loadCounter==0" v-for="(team,index) in teams" :style="markers[index]">
 			<img :src="team.icon" class="icon" alt="">
 			<svg viewBox="0 0 52 63" xmlns="http://www.w3.org/2000/svg">
-				<path d="M51.1735 25.2607C51.1735 35.4853 42.7532 45.2922 42.7532 45.2922C42.7532 45.2922 29.5214 62.5504 25.9128 62.5504C22.3041 62.5504 9.07228 45.2922 9.07228 45.2922C9.07228 45.2922 0.652039 35.4853 0.652039 25.2607C0.652039 11.3096 11.9616 0 25.9128 0C39.8639 0 51.1735 11.3096 51.1735 25.2607Z" fill="white"/>
+				<path fill="#ffffff" d="M51.1735 25.2607C51.1735 35.4853 42.7532 45.2922 42.7532 45.2922C42.7532 45.2922 29.5214 62.5504 25.9128 62.5504C22.3041 62.5504 9.07228 45.2922 9.07228 45.2922C9.07228 45.2922 0.652039 35.4853 0.652039 25.2607C0.652039 11.3096 11.9616 0 25.9128 0C39.8639 0 51.1735 11.3096 51.1735 25.2607Z"/>
 			</svg>
 		</div>
 	</div>
@@ -24,7 +25,8 @@ export default {
 				x: 0,
 				y: 0
 			},
-			clickedMarker: null
+			clickedMarker: null,
+			loadCounter: 2
 		}
 	},
 	computed: {
@@ -43,7 +45,7 @@ export default {
 				let duplicates = teamMarkers.filter(el => el.left == marker.left && el.top == marker.top)
 				duplicates.map((el,index) => {
 					if(marker != this.clickedMarker) el.top -= index*34
-					// el.zIndex = duplicates.length - index
+					if(!el.zIndex) el.zIndex = duplicates.length - index
 				})
 			})
 
@@ -54,6 +56,13 @@ export default {
 
 			return teamMarkers
 		},
+		mapOpacity() {
+			var start = new Date('2023-12-17T18:00:00'), // Jan 1, 2015
+			end = new Date('2023-12-17T19:00:00'), // August 24, 2015
+			today = new Date('2023-12-17T19:00:00') // April 23, 2015
+			const p = ((today - start) / (end - start));
+			return p
+		}
 	},
 	async mounted() {
 		this.handleResize()
@@ -128,15 +137,6 @@ export default {
 	object-fit: cover;
 }
 
-.dayMap {
-	animation: lightCycle 10s ease-in-out 0s infinite alternate;
-}
-
-@keyframes lightCycle {
-	from {opacity: 1;}
-	to {opacity: 0;}
-}
-
 .marker {
 	z-index: 50;
 	position: fixed;
@@ -164,9 +164,38 @@ export default {
 .marker img {
 	object-fit: contain;
 	position: relative;
-	transform: scale(1.5);
+	transform: scale(0.8) translateY(-7px);
 	z-index: 51;
-	width: 100%;
-	height: 100%;
+}
+
+.spinner {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+.spinner:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

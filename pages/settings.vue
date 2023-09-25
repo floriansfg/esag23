@@ -1,13 +1,19 @@
 <template>
 	<div class="settings">
 		<h1>Settings</h1>
-		<div class="input-group mb-3">
-			<select class="form-select" id="inputGroupSelect03" v-model="selectedTeam" aria-label="Example select with button addon">
-				<option selected>Team</option>
-				<option v-if="teams" v-for="(team,index) in teams" :value="team">{{ team.name }}</option>
-			</select>
-			<button class="btn btn-outline-secondary" type="button" @click="registerPush()">Anmelden</button>
+		<div class="alert alert-primary" role="alert">
+		Falls du diese Seite als Webapp installiert hast kannst du hier Push Notifications für dein Team aktivieren:
 		</div>
+		<div class="input-group mb-3">
+			<select required v-if="teams" class="form-select" v-model="selectedTeam">
+						<option :value="null" disabled>Team auswählen</option>
+						<option v-for="(team,index) in teams" :value="team">
+							{{ team.name }}
+						</option>
+                	</select>
+			<button class="btn btn-outline-primary" type="button" @click="registerPush()">Anmelden</button>
+		</div>
+		
 	</div>
 </template>
 
@@ -45,8 +51,6 @@ export default {
 </script>
 
 <style>
-
-
 .settings {
 	padding: 40px;
 	max-width: 800px;

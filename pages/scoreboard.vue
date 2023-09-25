@@ -30,16 +30,6 @@ export default {
 			this.teams = useTeams(data.teams,data.pointEntries).sort((a, b) => a.points < b.points ? 1 : -1);
 			this.pointEntries = Object.values(data.pointEntries).sort((a,b) => new Date(a.time) - new Date(b.time)).reverse()
 		});
-
-		// onValue(ref(db, 'pointEntries'), (snapshot) => {
-		// 	this.pointEntries = []
-			
-		// 	snapshot.forEach((childSnapshot) => {
-		// 		const childKey = childSnapshot.key;
-		// 		const childData = childSnapshot.val();
-		// 		this.pointEntries.push(childData)
-		// 	});
-		// });
 	},
 }
 </script>
@@ -68,13 +58,13 @@ h1 {
 		border-radius: 20px;
 		margin-bottom: 30px;
 		.icon {
-			width: 45px;
-			height: 45px;
+			height: 55px;
 			object-fit: cover;
 			border: solid 6px #FCB759;
 			border-radius: 100%;
 			z-index: 5;
 			background: white;
+			margin-left: -5px;
 		}
 		div {
 			padding: 8px 20px;

@@ -32,26 +32,26 @@ export default {
 }
 .pointScale {
 	padding: 20px;
-	/* background: #FFF4DA; */
+	background: #FFF4DA;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr); 
 	grid-template-rows: repeat(2, 1fr); 
 	grid-gap: 10px;
-	width: 80%;
-	margin: 40px;
 	border-radius: 40px;
 	position: fixed;
-	top: 0;
+	bottom: 20px;
+	max-width: 80%;
 }
 
 .team {
 	display: flex;
 	align-items: center;
+	max-width: 25%;
 }
 
 .team .icon {
-	width: 45px;
-	height: 45px;
+	width: 55px;
+	height: 55px;
 	object-fit: cover;
 	border: solid 6px #FCB759;
 	border-radius: 100%;
@@ -71,5 +71,8 @@ export default {
 	line-height: 0.7;
 	display: flex;
 	align-items: center;
+	text-overflow: ellipsis;
+  overflow: hidden; 
+  white-space: nowrap;
 }
 </style>

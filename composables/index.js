@@ -1,6 +1,4 @@
 import { getMessaging, getToken } from "firebase/messaging";
-import { getDatabase, ref, onValue } from "firebase/database"
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 
 export const useMessaging = () => {
 	const { $firebaseApp } = useNuxtApp()
@@ -15,31 +13,6 @@ export const useToken = async () => {
 	});
 
 	return token
-}
-
-export const loginUser = async (mail,password) => {
-
-	const auth = getAuth();
-	signInWithEmailAndPassword(auth, mail, password)
-	.then((userCredential) => {
-		// Signed in 
-		const user = userCredential.user;
-		// ...
-	})
-	.catch((error) => {
-		const errorCode = error.code;
-		const errorMessage = error.message;
-		console.log(errorMessage)
-	});
-}
-
-export const initUser = async () => {
-	const auth = getAuth()
-	onAuthStateChanged(auth, (user) => {
-		if(user) {
-			const uid = user.uid
-		}
-	})
 }
 
 export const useTeams = (teams,entries) => {
