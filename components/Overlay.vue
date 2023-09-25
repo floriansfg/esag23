@@ -69,10 +69,9 @@ export default {
 	color: #736C5A;
 	font-size: 15px;
 	line-height: 0.7;
-	display: flex;
-	align-items: center;
-	text-overflow: ellipsis;
-  overflow: hidden; 
-  white-space: nowrap;
+	max-width: 25vw;
+	white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
