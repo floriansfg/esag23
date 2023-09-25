@@ -44,7 +44,7 @@ export default {
 			teamMarkers.map(marker => {
 				let duplicates = teamMarkers.filter(el => el.left == marker.left && el.top == marker.top)
 				duplicates.map((el,index) => {
-					if(marker != this.clickedMarker) el.top -= index*34
+					if(marker != this.clickedMarker) el.top -= index*20
 					if(!el.zIndex) el.zIndex = duplicates.length - index
 				})
 			})
