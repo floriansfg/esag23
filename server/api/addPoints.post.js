@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 		const username = user.displayName ? user.displayName : user.email
 
 		var db = getDatabase();
-		await db.ref('pointEntries').push({
+		db.ref('pointEntries').push({
 			note: body.note,
 			points: body.points,
 			team: body.team,
@@ -23,13 +23,13 @@ export default defineEventHandler(async (event) => {
 			time: new Date().toJSON()
 		}, (error) => {
 			if(error) {
-				console.log(error)
+				console.log("Save error: "+error)
 			} else {
 				console.log("Save successfull")
 			}
 		} );
 
-		if(!body.silent) sendNotification("Update",body.points+" für dein Team",body.team)
+		if(!body.silent) sendNotification("Update",body.points+" Punkte für dein Team",body.team)
 		console.log(body.points + " Points added to "+body.team)
 	}).catch((error) => {
 		console.log(error)

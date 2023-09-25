@@ -37,6 +37,9 @@ export default {
 			showEntry: null
 		}
 	},
+	mounted() {
+		console.log(this.teams)
+	},
 	methods: {
 		close() {
 			this.showEntry = false

@@ -2,7 +2,7 @@
 	<div class="scoreboard">
 		<h1>Scoreboard</h1>
 		<div class="teams">
-			<div class="team" v-for="team in teams">
+			<div class="team" v-for="team in sortedTeams">
 				<img class="icon" :src="team.icon" alt=""/>
 				<div>
 					<span>{{ team.name }}</span>
@@ -27,10 +27,15 @@ export default {
 		const db = getDatabase()
 		onValue(ref(db, '/'), (snapshot) => {
 			const data = snapshot.val();
-			this.teams = useTeams(data.teams,data.pointEntries).sort((a, b) => a.points < b.points ? 1 : -1);
+			this.teams = useTeams(data.teams,data.pointEntries)
 			this.pointEntries = Object.values(data.pointEntries).sort((a,b) => new Date(a.time) - new Date(b.time)).reverse()
 		});
 	},
+	computed: {
+		sortedTeams() {
+			return [...this.teams].sort((a, b) => a.points < b.points ? 1 : -1);
+		}
+	}
 }
 </script>
 

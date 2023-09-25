@@ -6,7 +6,11 @@
 		<input type="text" class="form-control" placeholder="Username" v-model="username" aria-label="Username">
 		<button class="btn btn-outline-secondary" type="button" @click="saveUsername()">Save</button>
 	</div> -->
+
 	<button class="btn btn-primary" @click="signOut()">Abmelden</button>
+	<div class="alert alert-primary mt-5" role="alert">
+		Regelwerk: <a target="_blank" href="https://docs.google.com/spreadsheets/d/1tEKRFKL1Kc3o_w7iyx3ZUONr9q-sMBQmsO16mq71ZMI/edit#gid=0">Google Sheets Link</a>
+	</div>
 	<PointEntries :entries="pointEntries" :teams="teams" :admin="true">
 		<button class="btn btn-primary" @click="showAddpoints=true">Punkte hinzufügen</button>
 	</PointEntries>
@@ -98,8 +102,9 @@ export default {
 <style scoped>
 
 .admin-panel {
-	padding: 80px;
+	padding: 40px;
 	width: 100vw;
+	max-width: 800px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
