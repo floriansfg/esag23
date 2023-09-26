@@ -5,7 +5,7 @@
 			<img class="icon" :src="team.icon" alt="">
 			<div>
 				<div>{{ team.name }}</div>
-				<div>{{ team.points }} P</div>
+				<div>{{ team.points - team.previousPoints }} P</div>
 			</div>
 		</div>
 	</div>
